@@ -73,7 +73,15 @@ process scomatic_step1 {
         --max_nM 5 \
         --max_NH 1 
 
-"""
+    """
+
+    stub:
+    """
+    touch "${sample}.testcelltype1.bam"
+    touch "${sample}.testcelltype1.bam.bai"
+    touch "${sample}.testcelltype2.bam"
+    touch "${sample}.testcelltype2.bam.bai"
+    """
 }
 
 process scomatic_step2 {
