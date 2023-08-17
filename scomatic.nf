@@ -169,7 +169,7 @@ process scomatic_step4 {
 
     ##STEP4
     python $scriptbasecall1 \
-    --infile Step3/${sample}.BaseCellCounts.AllCellTypes.tsv \
+    --infile ${sample}.BaseCellCounts.AllCellTypes.tsv \
     --outfile Step4/${sample} \
     --ref $STARfasta
 
