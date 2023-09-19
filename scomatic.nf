@@ -164,7 +164,7 @@ process scomatic_step4 {
     path("Step4/${sample}.calling.step2.tsv"), 
     path("Step4/${sample}.calling.step2.pass.tsv")
 
-    shell :
+    shell:
     """
     mkdir Step4
 
@@ -205,14 +205,13 @@ process annotate_pass {
     tuple val(sample), path("Step4/${sample}.calling.step2.pass.tsv")
 
     output:
-    tuple val(sample),
-    path("${sample}_annotated")
+    tuple val(sample), path("${sample}_annotated")
 
     shell:
 
     """
-    grep -v '#' Step4/!{sample}.calling.step2.tsv"  | awk -F'-' -v OFS='\t' '{print $1,$2,$3,$4,$5,$0}' > sample.variants.avinput 
-    table_annovar.pl sample.variants.avinput !ANNOVAR_DATA/hg38 \
+    grep -v '#' Step4/!{sample}.calling.step2.tsv  | awk -F '-' -v OFS='\t' '{print $1,$2,$3,$4,$5,$0}' > sample.variants.avinput 
+    table_annovar.pl sample.variants.avinput !{ANNOVAR_DATA}/hg38 \
         --thread 4 \
         --buildver hg38 \
         --outfile !{sample}_annotated \
