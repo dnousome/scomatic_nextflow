@@ -208,7 +208,8 @@ process annotate_pass {
     tuple val(sample),
     path("${sample}_annotated")
 
-    script :
+    shell:
+
     """
     grep -v '#' Step4/!{sample}.calling.step2.tsv"  | awk -F'-' -v OFS='\t' '{print $1,$2,$3,$4,$5,$0}' > sample.variants.avinput 
     table_annovar.pl sample.variants.avinput !ANNOVAR_DATA/hg38 \
