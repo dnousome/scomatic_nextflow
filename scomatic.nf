@@ -205,7 +205,7 @@ process annotate_pass {
     tuple val(sample), path("Step4/${sample}.calling.step2.pass.tsv")
 
     output:
-    tuple val(sample), path("${sample}_annotated")
+    tuple val(sample), path("${sample}_annotated.hg38_multianno.txt")
 
     shell:
 
