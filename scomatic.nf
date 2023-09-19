@@ -210,7 +210,7 @@ process annotate_pass {
     shell:
 
     '''
-    grep -v '#' Step4/!{sample}.calling.step2.tsv  | awk -F '-' -v OFS='\t' '{print $1,$2,$3,$4,$5,$0}' > sample.variants.avinput 
+    grep -v '#' Step4/!{sample}.calling.step2.pass.tsv  | awk -F '-' -v OFS='\t' '{print $1,$2,$3,$4,$5,$0}' > sample.variants.avinput 
     table_annovar.pl sample.variants.avinput $ANNOVAR_DATA/hg38 \
         --thread 4 \
         --buildver hg38 \
