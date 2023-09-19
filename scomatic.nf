@@ -33,8 +33,8 @@ workflow {
     bam.Name.split('\\.')[1],bam,bai)}
     scomatic_step2(scin1)
     scin2=scomatic_step2.out.groupTuple()
-    scomatic_step3(scin2) | scomatic_step4.out.map{sample,step1,step2,pass -> tuple(sample,pass)} | annotate_pass
-
+    scomatic_step3(scin2) | scomatic_step4
+    scomatic_step4.out.map{sample,step1,step2,pass -> tuple(sample,pass)} 
 }
 
 
