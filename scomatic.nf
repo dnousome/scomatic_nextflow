@@ -33,9 +33,10 @@ workflow {
     bam.Name.split('\\.')[1],bam,bai)}
     scomatic_step2(scin1)
     scin2=scomatic_step2.out.groupTuple()
-    scomatic_step3(scin2) | scomatic_step4
+    scomatic_step3(scin2) | scomatic_step4.map{sample,step1,step2,pass -> tuple(sample,pass)} | annotate_pass
 
 }
+
 
 
 process calculate_barcodes{
@@ -193,3 +194,32 @@ process scomatic_step4 {
     touch "Step4/${sample}.calling.step2.pass.tsv"
     """
 }
+
+
+process annotate_pass {
+    module = ['annovar/2020-06-08']
+
+    publishDir("${outdir}/scomatic/annotated", mode: 'copy')
+
+    input:
+    tuple val(sample), path("Step4/${sample}.calling.step2.pass.tsv")
+
+    output:
+    tuple val(sample),
+    path("${sample}_annotated")
+
+    script :
+    """
+    grep -v '#' Step4/!{sample}.calling.step2.tsv"  | awk -F'-' -v OFS='\t' '{print $1,$2,$3,$4,$5,$0}' > sample.variants.avinput 
+    table_annovar.pl sample.variants.avinput !ANNOVAR_DATA/hg38 \
+        --thread 4 \
+        --buildver hg38 \
+        --outfile !{sample}_annotated \
+        --remove \
+        --protocol refGene,clinvar_20230416,cosmic92_coding,avsnp150,dbnsfp42a \
+        --operation g,f,f,f,f \
+        --nastring '.' -polish -otherinfo
+
+    """
+}
+
